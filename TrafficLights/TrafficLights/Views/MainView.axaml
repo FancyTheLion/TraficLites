@@ -12,5 +12,41 @@
     <vm:MainViewModel />
   </Design.DataContext>
 
-  <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+	<!-- Including styles -->
+	<UserControl.Styles>
+		<StyleInclude Source="/Styles/Common.axaml" />
+	</UserControl.Styles>
+
+	<!-- Main grid -->
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+		</Grid.ColumnDefinitions>
+
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+
+		<!-- Here traffic lights control resides -->
+		<Border
+			Grid.Column="0"
+			Grid.Row="0"
+			Classes="VisibleBorders">
+
+			<Label>Здесь будет светофор</Label>
+		</Border>
+
+		<!-- Here buttons reside -->
+		<Border
+			Grid.Column="0"
+			Grid.Row="1"
+			Classes="VisibleBorders">
+
+			<Label>Здесь будут кнопки</Label>
+		</Border>
+		
+	</Grid>
+
+
 </UserControl>
