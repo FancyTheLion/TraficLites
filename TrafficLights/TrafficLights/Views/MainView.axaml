@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:TrafficLights.ViewModels"
+			 xmlns:controls="clr-namespace:TrafficLights.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="TrafficLights.Views.MainView"
              x:DataType="vm:MainViewModel">
@@ -34,7 +35,13 @@
 			Grid.Row="0"
 			Classes="VisibleBorders">
 
-			<Label>Здесь будет светофор</Label>
+			<!--Traffic lights control -->
+			<controls:TrafficLightsControl
+				HorizontalAlignment="Center"
+				IsRedLightOn="{ Binding IsRedOn }">
+				
+			</controls:TrafficLightsControl>
+			
 		</Border>
 
 		<!-- Here buttons reside -->
