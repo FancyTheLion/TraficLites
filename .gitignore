@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Task-36/Task-36/obj
+/TrafficLights/TrafficLights/Controls
+/Task-36/.vs
