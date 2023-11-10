@@ -38,6 +38,7 @@
 			<!--Traffic lights control -->
 			<controls:TrafficLightsControl
 				HorizontalAlignment="Center"
+				Width="300"
 				IsRedLightOn="{ Binding IsRedOn }"
 				IsYellowLightOn="{ Binding IsYellowOn }"
 				IsGreenLightOn="{ Binding IsGreenOn }">

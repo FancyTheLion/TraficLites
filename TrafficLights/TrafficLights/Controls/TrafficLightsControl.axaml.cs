@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using System;
 
 namespace TrafficLights.Controls
@@ -56,9 +57,22 @@ namespace TrafficLights.Controls
 
         #endregion
 
+        /// <summary>
+        /// Control width
+        /// </summary>
+        private double _width;
+
+        /// <summary>
+        /// Control height
+        /// </summary>
+        private double _height;
+
         public TrafficLightsControl()
         {
             InitializeComponent();
+
+            // Register a control property change handler
+            PropertyChanged += OnPropertyChangedListener;
 
             // Setting up properties handlers
             IsRedLightOnProperty.Changed.Subscribe(x => HandleRedLightStateChanged(x.Sender, x.NewValue.GetValueOrDefault<bool>()));
@@ -93,5 +107,34 @@ namespace TrafficLights.Controls
         }
 
         #endregion
+
+        /// <summary>
+        /// This method is being called when any property of the control changes.
+        /// </summary>
+        private void OnPropertyChangedListener(object sender, AvaloniaPropertyChangedEventArgs e)
+        {
+            if (e.Property.Name.Equals("Bounds")) // If a change occurs to a property named Bounds
+            {
+                OnResize((Rect)e.NewValue); // Call method OnResize(), passing there the new sizes of the control
+            }
+        }
+
+        /// <summary>
+        /// The method is called when the size of the control changes
+        /// </summary>
+        private void OnResize(Rect bounds)
+        {
+            _width = bounds.Width;
+            _height = bounds.Height;
+        }
+
+        /// <summary>
+        /// Method for drawing
+        /// </summary>
+        public override void Render(DrawingContext context)
+        {
+            base.Render(context);
+
+        }
     }
 }
