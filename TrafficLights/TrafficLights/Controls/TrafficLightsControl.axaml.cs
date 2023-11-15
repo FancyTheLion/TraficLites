@@ -8,6 +8,87 @@ namespace TrafficLights.Controls
 {
     public partial class TrafficLightsControl : UserControl
     {
+        #region Constants
+
+        /// <summary>
+        /// You canít make color a constant, here is a different approach to the properties of the constant
+        /// </summary>
+        private static readonly Color BackgroundColor = Colors.Gray;
+        private static readonly Color BorderColor = Colors.Black;
+
+        private readonly SolidColorBrush BackgroundFill = new SolidColorBrush(BackgroundColor);
+        private readonly Pen HandPen = new Pen(new SolidColorBrush(BorderColor));
+
+        #endregion
+
+        #region —ontrol size
+
+        /// <summary>
+        /// Control width
+        /// </summary>
+        private double _width;
+
+        /// <summary>
+        /// Control height
+        /// </summary>
+        private double _height;
+
+        #endregion
+
+        #region —ontrol elements coordinates
+
+        /// <summary>
+        /// Middle control (X), also _first point_ (Y)(T1)
+        /// </summary>
+        private Point _middlePointX = new Point(0, 0);
+
+        /// <summary>
+        /// Second point (Y)(T2)
+        /// </summary>
+        private Point _secondPointY = new Point(0, 0);
+
+        /// <summary>
+        /// Third point (Y)(T3)
+        /// </summary>
+        private Point _thirdPointY = new Point(0, 0);
+
+        /// <summary>
+        /// Fourth point (Y)(T4)
+        /// </summary>
+        private Point _fourthPointY = new Point(0, 0);
+
+        /// <summary>
+        /// Half width 
+        /// </summary>
+        private double _halfWidth;
+
+        /// <summary>
+        /// Third part of length
+        /// </summary>
+        private double _thirdPartLengthHeight;
+
+        /// <summary>
+        /// Point circle center 1
+        /// </summary>
+        private Point _first—ircleCenter = new Point(0, 0);
+
+        /// <summary>
+        /// Point circle center 2
+        /// </summary>
+        private Point _second—ircleCenter = new Point(0, 0);
+
+        /// <summary>
+        /// Point circle center 3
+        /// </summary>
+        private Point _thirdCircleCenter = new Point(0, 0);
+
+        /// <summary>
+        /// Circle radius
+        /// </summary>
+        private double Radius;
+
+        #endregion
+
         #region Bound properties
 
         /// <summary>
@@ -58,15 +139,8 @@ namespace TrafficLights.Controls
         #endregion
 
         /// <summary>
-        /// Control width
+        /// Designer
         /// </summary>
-        private double _width;
-
-        /// <summary>
-        /// Control height
-        /// </summary>
-        private double _height;
-
         public TrafficLightsControl()
         {
             InitializeComponent();
@@ -126,6 +200,25 @@ namespace TrafficLights.Controls
         {
             _width = bounds.Width;
             _height = bounds.Height;
+
+            _halfWidth = _width / 2;
+            _thirdPartLengthHeight = _height / 3;
+
+            /// “‡Í ÔÓ‰ÛÏ‡Î.. ¿ Á‡˜ÂÏ ÏÌÂ ˝ÚË ÚÓ˜ÍË?) ◊ÚÓ·˚ Ò ÌËÏË Ú‡ÍÓ„Ó Á‡ÏÛÚËÚ¸.. ’)
+            _middlePointX = new Point(_halfWidth, 0);
+            _secondPointY = new Point(_halfWidth, _thirdPartLengthHeight);
+            _thirdPointY = new Point(_halfWidth, _thirdPartLengthHeight * 2);
+            _fourthPointY = new Point(_halfWidth, _thirdPartLengthHeight *3);
+
+            Radius = _thirdPartLengthHeight / 2;
+
+            _first—ircleCenter = new Point(_halfWidth, _thirdPartLengthHeight / 2);
+            _second—ircleCenter = new Point(_halfWidth, (_thirdPartLengthHeight/2) + (Radius*2));
+            _thirdCircleCenter = new Point(_halfWidth, (_thirdPartLengthHeight / 2) + (Radius * 4));
+
+
+
+
         }
 
         /// <summary>
@@ -134,6 +227,40 @@ namespace TrafficLights.Controls
         public override void Render(DrawingContext context)
         {
             base.Render(context);
+
+            context.DrawRectangle
+            (
+                BackgroundFill,
+                HandPen,
+                new Rect(0, 0, _width, _height)
+            );
+
+            context.DrawEllipse
+            (
+                new SolidColorBrush(Colors.Red),
+                new Pen(new SolidColorBrush(Colors.Black)),
+                _first—ircleCenter,
+                Radius,
+                Radius
+            );
+
+            context.DrawEllipse
+            (
+                new SolidColorBrush(Colors.Yellow),
+                new Pen(new SolidColorBrush(Colors.Black)),
+                _second—ircleCenter,
+                Radius,
+                Radius
+            );
+
+            context.DrawEllipse
+            (
+                new SolidColorBrush(Colors.Green),
+                new Pen(new SolidColorBrush(Colors.Black)),
+                _thirdCircleCenter,
+                Radius,
+                Radius
+            );
 
         }
     }
