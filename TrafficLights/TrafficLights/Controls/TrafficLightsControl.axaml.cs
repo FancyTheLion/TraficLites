@@ -208,7 +208,9 @@ namespace TrafficLights.Controls
 
             var heightSixth = _height / 6.0;
 
-            _lightRadius = (_height / 6.0) * LightsRadiusMultiplier;
+            var radiusH = _height / 6.0;
+            var radiusW = _width / 2.0;
+            _lightRadius = Math.Min(radiusW, radiusH) * LightsRadiusMultiplier;
 
             _redLightCenter = new Point(_halfWidth, heightSixth);
             _yellowLightCenter = new Point(_halfWidth, 3 * heightSixth);

@@ -35,16 +35,27 @@
 			Grid.Row="0"
 			Classes="VisibleBorders">
 
-			<!--Traffic lights control -->
-			<controls:TrafficLightsControl
-				HorizontalAlignment="Center"
-				Width="300"
-				IsRedLightOn="{ Binding IsRedOn }"
-				IsYellowLightOn="{ Binding IsYellowOn }"
-				IsGreenLightOn="{ Binding IsGreenOn }">
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="35*" />
+					<ColumnDefinition Width="30*" />
+					<ColumnDefinition Width="35*" />
+				</Grid.ColumnDefinitions>
+
+				<Grid.RowDefinitions>
+					<RowDefinition Height="*" />
+				</Grid.RowDefinitions>
 				
-			</controls:TrafficLightsControl>
-			
+				<!--Traffic lights control -->
+				<controls:TrafficLightsControl
+					Grid.Column="1"
+					Grid.Row="0"
+					HorizontalAlignment="Stretch"
+					IsRedLightOn="{ Binding IsRedOn }"
+					IsYellowLightOn="{ Binding IsYellowOn }"
+					IsGreenLightOn="{ Binding IsGreenOn }">
+				</controls:TrafficLightsControl>
+			</Grid>
 		</Border>
 
 		<!-- Here buttons reside -->
