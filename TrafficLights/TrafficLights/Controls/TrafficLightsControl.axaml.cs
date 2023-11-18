@@ -38,6 +38,15 @@ namespace TrafficLights.Controls
 
         #endregion
 
+        #region Settings
+
+        /// <summary>
+        /// Lights radius multiplier
+        /// </summary>
+        private const double LightsRadiusMultiplier = 0.9;
+
+        #endregion
+        
         #endregion
 
         #region Control size
@@ -60,11 +69,6 @@ namespace TrafficLights.Controls
         /// Half width 
         /// </summary>
         private double _halfWidth;
-
-        /// <summary>
-        /// Third part of length
-        /// </summary>
-        private double _thirdPartHeightLength;
 
         /// <summary>
         /// Red light center point
@@ -200,14 +204,15 @@ namespace TrafficLights.Controls
             _width = bounds.Width;
             _height = bounds.Height;
 
-            _halfWidth = _width / 2;
-            _thirdPartHeightLength = _height / 3;
+            _halfWidth = _width / 2.0;
 
-            _lightRadius = _thirdPartHeightLength / 2;
+            var heightSixth = _height / 6.0;
 
-            _redLightCenter = new Point(_halfWidth, _thirdPartHeightLength / 2);
-            _yellowLightCenter = new Point(_halfWidth, (_thirdPartHeightLength/2) + (_lightRadius*2));
-            _greenLightCenter = new Point(_halfWidth, (_thirdPartHeightLength / 2) + (_lightRadius * 4));
+            _lightRadius = (_height / 6.0) * LightsRadiusMultiplier;
+
+            _redLightCenter = new Point(_halfWidth, heightSixth);
+            _yellowLightCenter = new Point(_halfWidth, 3 * heightSixth);
+            _greenLightCenter = new Point(_halfWidth, 5 * heightSixth);
         }
 
         /// <summary>
