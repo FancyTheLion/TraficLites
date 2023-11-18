@@ -17,6 +17,10 @@ namespace TrafficLights.Controls
         private static readonly Color BorderColor = Colors.Black;
         private static readonly Color CircleBorderColor = Colors.Black;
 
+        private static readonly Color RedLightOnColor = Colors.Red;
+        private static readonly Color YellowLightOnColor = Colors.Yellow;
+        private static readonly Color GreenLightOnColor = Colors.Green;
+
         #endregion
 
         #region Brushes and pens
@@ -36,6 +40,21 @@ namespace TrafficLights.Controls
         /// </summary>
         private readonly Pen LightsBordersPen = new Pen(new SolidColorBrush(CircleBorderColor));
 
+        /// <summary>
+        /// Brush for shining red light
+        /// </summary>
+        private readonly IBrush RedLightOnBrush = new SolidColorBrush(RedLightOnColor);
+        
+        /// <summary>
+        /// Brush for shining yellow light
+        /// </summary>
+        private readonly IBrush YellowLightOnBrush = new SolidColorBrush(YellowLightOnColor);
+        
+        /// <summary>
+        /// Brush for shining green light
+        /// </summary>
+        private readonly IBrush GreenLightOnBrush = new SolidColorBrush(GreenLightOnColor);
+        
         #endregion
 
         #region Settings
@@ -60,6 +79,11 @@ namespace TrafficLights.Controls
         /// Control height
         /// </summary>
         private double _height;
+
+        /// <summary>
+        /// Traffic light case sizes
+        /// </summary>
+        private Rect _caseSizes = new Rect(0, 0, 1, 1);
 
         #endregion
 
@@ -204,6 +228,8 @@ namespace TrafficLights.Controls
             _width = bounds.Width;
             _height = bounds.Height;
 
+            _caseSizes = new Rect(0, 0, _width, _height);
+
             _halfWidth = _width / 2.0;
 
             var heightSixth = _height / 6.0;
@@ -224,40 +250,37 @@ namespace TrafficLights.Controls
         {
             base.Render(context);
 
+            // Case
             context.DrawRectangle
             (
                 CaseFillBrush,
                 CasePen,
-                new Rect(0, 0, _width, _height)
+                _caseSizes
             );
+            
+            // Red light
+            DrawLight(context, RedLightOnBrush, _redLightCenter);
+            
+            // Yellow light
+            DrawLight(context, YellowLightOnBrush, _yellowLightCenter);
+            
+            // Green light
+            DrawLight(context, GreenLightOnBrush, _greenLightCenter);
+        }
 
+        /// <summary>
+        /// Method to draw light
+        /// </summary>
+        private void DrawLight(DrawingContext context, IBrush lightBrush, Point lightCenter)
+        {
             context.DrawEllipse
             (
-                new SolidColorBrush(Colors.Red),
+                lightBrush,
                 LightsBordersPen,
-                _redLightCenter,
+                lightCenter,
                 _lightRadius,
                 _lightRadius
             );
-
-            context.DrawEllipse
-            (
-                new SolidColorBrush(Colors.Yellow),
-                LightsBordersPen,
-                _yellowLightCenter,
-                _lightRadius,
-                _lightRadius
-            );
-
-            context.DrawEllipse
-            (
-                new SolidColorBrush(Colors.Green),
-                LightsBordersPen,
-                _greenLightCenter,
-                _lightRadius,
-                _lightRadius
-            );
-
         }
     }
 }
