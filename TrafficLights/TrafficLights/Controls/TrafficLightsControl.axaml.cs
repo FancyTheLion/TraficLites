@@ -10,18 +10,37 @@ namespace TrafficLights.Controls
     {
         #region Constants
 
-        /// <summary>
-        /// You canít make color a constant, here is a different approach to the properties of the constant
-        /// </summary>
+        #region Colors
+
+        // You can't make color a constant, here is a different approach to the properties of the constant
         private static readonly Color BackgroundColor = Colors.Gray;
         private static readonly Color BorderColor = Colors.Black;
-
-        private readonly SolidColorBrush BackgroundFill = new SolidColorBrush(BackgroundColor);
-        private readonly Pen HandPen = new Pen(new SolidColorBrush(BorderColor));
+        private static readonly Color CircleBorderColor = Colors.Black;
 
         #endregion
 
-        #region —ontrol size
+        #region Brushes and pens
+
+        /// <summary>
+        /// Brush to draw traffic lights case
+        /// </summary>
+        private readonly SolidColorBrush CaseFillBrush = new SolidColorBrush(BackgroundColor);
+        
+        /// <summary>
+        /// Pen to draw traffic lights case
+        /// </summary>
+        private readonly Pen CasePen = new Pen(new SolidColorBrush(BorderColor));
+        
+        /// <summary>
+        /// Pen to draw lights borders
+        /// </summary>
+        private readonly Pen LightsBordersPen = new Pen(new SolidColorBrush(CircleBorderColor));
+
+        #endregion
+
+        #endregion
+
+        #region Control size
 
         /// <summary>
         /// Control width
@@ -35,28 +54,8 @@ namespace TrafficLights.Controls
 
         #endregion
 
-        #region —ontrol elements coordinates
-
-        /// <summary>
-        /// Middle control (X), also _first point_ (Y)(T1)
-        /// </summary>
-        private Point _middlePointX = new Point(0, 0);
-
-        /// <summary>
-        /// Second point (Y)(T2)
-        /// </summary>
-        private Point _secondPointY = new Point(0, 0);
-
-        /// <summary>
-        /// Third point (Y)(T3)
-        /// </summary>
-        private Point _thirdPointY = new Point(0, 0);
-
-        /// <summary>
-        /// Fourth point (Y)(T4)
-        /// </summary>
-        private Point _fourthPointY = new Point(0, 0);
-
+        #region Control elements coordinates
+        
         /// <summary>
         /// Half width 
         /// </summary>
@@ -65,27 +64,27 @@ namespace TrafficLights.Controls
         /// <summary>
         /// Third part of length
         /// </summary>
-        private double _thirdPartLengthHeight;
+        private double _thirdPartHeightLength;
 
         /// <summary>
-        /// Point circle center 1
+        /// Red light center point
         /// </summary>
-        private Point _first—ircleCenter = new Point(0, 0);
+        private Point _redLightCenter = new Point(0, 0);
 
         /// <summary>
-        /// Point circle center 2
+        /// Yellow light center
         /// </summary>
-        private Point _second—ircleCenter = new Point(0, 0);
+        private Point _yellowLightCenter = new Point(0, 0);
 
         /// <summary>
-        /// Point circle center 3
+        /// Green light center
         /// </summary>
-        private Point _thirdCircleCenter = new Point(0, 0);
+        private Point _greenLightCenter = new Point(0, 0);
 
         /// <summary>
         /// Circle radius
         /// </summary>
-        private double Radius;
+        private double _lightRadius;
 
         #endregion
 
@@ -202,23 +201,13 @@ namespace TrafficLights.Controls
             _height = bounds.Height;
 
             _halfWidth = _width / 2;
-            _thirdPartLengthHeight = _height / 3;
+            _thirdPartHeightLength = _height / 3;
 
-            /// “‡Í ÔÓ‰ÛÏ‡Î.. ¿ Á‡˜ÂÏ ÏÌÂ ˝ÚË ÚÓ˜ÍË?) ◊ÚÓ·˚ Ò ÌËÏË Ú‡ÍÓ„Ó Á‡ÏÛÚËÚ¸.. ’)
-            _middlePointX = new Point(_halfWidth, 0);
-            _secondPointY = new Point(_halfWidth, _thirdPartLengthHeight);
-            _thirdPointY = new Point(_halfWidth, _thirdPartLengthHeight * 2);
-            _fourthPointY = new Point(_halfWidth, _thirdPartLengthHeight *3);
+            _lightRadius = _thirdPartHeightLength / 2;
 
-            Radius = _thirdPartLengthHeight / 2;
-
-            _first—ircleCenter = new Point(_halfWidth, _thirdPartLengthHeight / 2);
-            _second—ircleCenter = new Point(_halfWidth, (_thirdPartLengthHeight/2) + (Radius*2));
-            _thirdCircleCenter = new Point(_halfWidth, (_thirdPartLengthHeight / 2) + (Radius * 4));
-
-
-
-
+            _redLightCenter = new Point(_halfWidth, _thirdPartHeightLength / 2);
+            _yellowLightCenter = new Point(_halfWidth, (_thirdPartHeightLength/2) + (_lightRadius*2));
+            _greenLightCenter = new Point(_halfWidth, (_thirdPartHeightLength / 2) + (_lightRadius * 4));
         }
 
         /// <summary>
@@ -230,36 +219,36 @@ namespace TrafficLights.Controls
 
             context.DrawRectangle
             (
-                BackgroundFill,
-                HandPen,
+                CaseFillBrush,
+                CasePen,
                 new Rect(0, 0, _width, _height)
             );
 
             context.DrawEllipse
             (
                 new SolidColorBrush(Colors.Red),
-                new Pen(new SolidColorBrush(Colors.Black)),
-                _first—ircleCenter,
-                Radius,
-                Radius
+                LightsBordersPen,
+                _redLightCenter,
+                _lightRadius,
+                _lightRadius
             );
 
             context.DrawEllipse
             (
                 new SolidColorBrush(Colors.Yellow),
-                new Pen(new SolidColorBrush(Colors.Black)),
-                _second—ircleCenter,
-                Radius,
-                Radius
+                LightsBordersPen,
+                _yellowLightCenter,
+                _lightRadius,
+                _lightRadius
             );
 
             context.DrawEllipse
             (
                 new SolidColorBrush(Colors.Green),
-                new Pen(new SolidColorBrush(Colors.Black)),
-                _thirdCircleCenter,
-                Radius,
-                Radius
+                LightsBordersPen,
+                _greenLightCenter,
+                _lightRadius,
+                _lightRadius
             );
 
         }
