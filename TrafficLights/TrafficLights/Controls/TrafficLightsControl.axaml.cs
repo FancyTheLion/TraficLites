@@ -18,9 +18,12 @@ namespace TrafficLights.Controls
         private static readonly Color CircleBorderColor = Colors.Black;
 
         private static readonly Color RedLightOnColor = Colors.Red;
+        private static readonly Color RedLightOffColor = new Color(255, 60, 0, 0);
         private static readonly Color YellowLightOnColor = Colors.Yellow;
+        private static readonly Color YellowLightOffColor = new Color(255, 60, 60, 0);
         private static readonly Color GreenLightOnColor = Colors.Green;
-
+        private static readonly Color GreenLightOffColor = new Color(255, 0, 60, 0);
+        
         #endregion
 
         #region Brushes and pens
@@ -46,14 +49,29 @@ namespace TrafficLights.Controls
         private readonly IBrush RedLightOnBrush = new SolidColorBrush(RedLightOnColor);
         
         /// <summary>
+        /// Brush for off red light
+        /// </summary>
+        private readonly IBrush RedLightOffBrush = new SolidColorBrush(RedLightOffColor);
+        
+        /// <summary>
         /// Brush for shining yellow light
         /// </summary>
         private readonly IBrush YellowLightOnBrush = new SolidColorBrush(YellowLightOnColor);
         
         /// <summary>
+        /// Brush for off yellow light
+        /// </summary>
+        private readonly IBrush YellowLightOffBrush = new SolidColorBrush(YellowLightOffColor);
+        
+        /// <summary>
         /// Brush for shining green light
         /// </summary>
         private readonly IBrush GreenLightOnBrush = new SolidColorBrush(GreenLightOnColor);
+        
+        /// <summary>
+        /// Brush for off green light
+        /// </summary>
+        private readonly IBrush GreenLightOffBrush = new SolidColorBrush(GreenLightOffColor);
         
         #endregion
 
@@ -259,13 +277,13 @@ namespace TrafficLights.Controls
             );
             
             // Red light
-            DrawLight(context, RedLightOnBrush, _redLightCenter);
+            DrawLight(context, IsRedLightOn ? RedLightOnBrush : RedLightOffBrush, _redLightCenter);
             
             // Yellow light
-            DrawLight(context, YellowLightOnBrush, _yellowLightCenter);
+            DrawLight(context, IsYellowLightOn ? YellowLightOnBrush : YellowLightOffBrush, _yellowLightCenter);
             
             // Green light
-            DrawLight(context, GreenLightOnBrush, _greenLightCenter);
+            DrawLight(context, IsGreenLightOn ? GreenLightOnBrush : GreenLightOffBrush, _greenLightCenter);
         }
 
         /// <summary>
