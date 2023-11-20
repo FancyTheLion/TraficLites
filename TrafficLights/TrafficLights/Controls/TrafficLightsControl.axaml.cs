@@ -299,7 +299,6 @@ namespace TrafficLights.Controls
                 _lightRadius,
                 _lightRadius
             );
-            
         }
     }
 }
