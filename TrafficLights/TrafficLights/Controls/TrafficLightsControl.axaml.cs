@@ -25,7 +25,17 @@ namespace TrafficLights.Controls
         private static readonly Color GreenLightOffColor = new Color(255, 0, 60, 0);
         
         #endregion
+        
+        /// <summary>
+        /// Step between LEDs X
+        /// </summary>
+        private const double StepBetweenlLedX = 15;
 
+        /// <summary>
+        /// Step between LEDs Y
+        /// </summary>
+        private const double StepBetweenlLedY = 15;
+        
         #region Brushes and pens
 
         /// <summary>
@@ -131,6 +141,8 @@ namespace TrafficLights.Controls
         /// Circle radius
         /// </summary>
         private double _lightRadius;
+
+        private double heightSixth;
 
         #endregion
 
@@ -250,7 +262,7 @@ namespace TrafficLights.Controls
 
             _halfWidth = _width / 2.0;
 
-            var heightSixth = _height / 6.0;
+            heightSixth = _height / 6.0;
 
             var radiusH = _height / 6.0;
             var radiusW = _width / 2.0;
@@ -276,8 +288,6 @@ namespace TrafficLights.Controls
                 _caseSizes
             );
             
-            DrawLed(context, new Point(10, 10), GreenLightOnBrush);
-            
             // Red light
             DrawLight(context, IsRedLightOn ? RedLightOnBrush : RedLightOffBrush, _redLightCenter);
             
@@ -293,6 +303,17 @@ namespace TrafficLights.Controls
         /// </summary>
         private void DrawLight(DrawingContext context, IBrush lightBrush, Point lightCenter)
         {
+            for (var y = lightCenter.Y - _lightRadius; y < lightCenter.Y + _lightRadius; y += StepBetweenlLedY)
+            {
+                for (var x = lightCenter.X - _lightRadius; x < lightCenter.X + _lightRadius; x += StepBetweenlLedX)
+                {
+                    DrawLed(context, new Point(x, y), lightBrush);
+                }
+            }
+        }
+        
+        /*private void DrawLight(DrawingContext context, IBrush lightBrush, Point lightCenter)
+        {
             context.DrawEllipse
             (
                 lightBrush,
@@ -301,7 +322,7 @@ namespace TrafficLights.Controls
                 _lightRadius,
                 _lightRadius
             );
-        }
+        }*/
 
         private void DrawLed(DrawingContext context, Point ledCenter, IBrush ledBrush)
         {
