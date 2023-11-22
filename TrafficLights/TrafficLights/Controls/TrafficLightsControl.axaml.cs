@@ -276,6 +276,8 @@ namespace TrafficLights.Controls
                 _caseSizes
             );
             
+            DrawLed(context, new Point(10, 10), GreenLightOnBrush);
+            
             // Red light
             DrawLight(context, IsRedLightOn ? RedLightOnBrush : RedLightOffBrush, _redLightCenter);
             
@@ -299,6 +301,19 @@ namespace TrafficLights.Controls
                 _lightRadius,
                 _lightRadius
             );
+        }
+
+        private void DrawLed(DrawingContext context, Point ledCenter, IBrush ledBrush)
+        {
+            context.DrawEllipse
+            (
+                ledBrush,
+                new Pen(ledBrush),
+                ledCenter,
+                5,
+                5
+            );
+            
         }
     }
 }
