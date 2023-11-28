@@ -31,7 +31,7 @@ namespace TrafficLights.Controls
         /// <summary>
         /// LED count
         /// </summary>
-        private const int LedsCount = 10;
+        private const int LedsCount = 30;
 
         #endregion
         
@@ -322,7 +322,7 @@ namespace TrafficLights.Controls
             {
                 for (var x = lightCenter.X - _lightRadius; x < lightCenter.X + _lightRadius; x += _ledsStep)
                 {
-                    if (Math.Pow(x - lightCenter.X, 2) + Math.Pow(y - lightCenter.Y, 2) < Math.Pow(_lightRadius, 2))
+                    if (Math.Pow(x - lightCenter.X, 2) + Math.Pow(y - lightCenter.Y, 2) <= Math.Pow(_lightRadius, 2))
                     {
                         DrawLed(context, new Point(x, y), lightBrush);
                     }
