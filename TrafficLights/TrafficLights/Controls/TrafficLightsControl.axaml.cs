@@ -25,16 +25,15 @@ namespace TrafficLights.Controls
         private static readonly Color GreenLightOffColor = new Color(255, 0, 60, 0);
         
         #endregion
+
+        #region LED settings
         
         /// <summary>
-        /// Step between LEDs X
+        /// LED count
         /// </summary>
-        private const double StepBetweenlLedX = 15;
+        private const int LedsCount = 10;
 
-        /// <summary>
-        /// Step between LEDs Y
-        /// </summary>
-        private const double StepBetweenlLedY = 15;
+        #endregion
         
         #region Brushes and pens
 
@@ -142,8 +141,21 @@ namespace TrafficLights.Controls
         /// </summary>
         private double _lightRadius;
 
-        private double heightSixth;
+        /// <summary>
+        /// One sixth's of height 
+        /// </summary>
+        private double _heightSixth;
 
+        /// <summary>
+        /// LED radius
+        /// </summary>
+        private double _ledRadius;
+
+        /// <summary>
+        /// Step between LEDs
+        /// </summary>
+        private double _ledsStep;
+        
         #endregion
 
         #region Bound properties
@@ -262,15 +274,18 @@ namespace TrafficLights.Controls
 
             _halfWidth = _width / 2.0;
 
-            heightSixth = _height / 6.0;
+            _heightSixth = _height / 6.0;
 
             var radiusH = _height / 6.0;
             var radiusW = _width / 2.0;
             _lightRadius = Math.Min(radiusW, radiusH) * LightsRadiusMultiplier;
 
-            _redLightCenter = new Point(_halfWidth, heightSixth);
-            _yellowLightCenter = new Point(_halfWidth, 3 * heightSixth);
-            _greenLightCenter = new Point(_halfWidth, 5 * heightSixth);
+            _redLightCenter = new Point(_halfWidth, _heightSixth);
+            _yellowLightCenter = new Point(_halfWidth, 3 * _heightSixth);
+            _greenLightCenter = new Point(_halfWidth, 5 * _heightSixth);
+            
+            _ledRadius = _lightRadius / (2 * LedsCount - 1);
+            _ledsStep = 2 * _lightRadius / (LedsCount - 1);
         }
 
         /// <summary>
@@ -303,11 +318,14 @@ namespace TrafficLights.Controls
         /// </summary>
         private void DrawLight(DrawingContext context, IBrush lightBrush, Point lightCenter)
         {
-            for (var y = lightCenter.Y - _lightRadius; y < lightCenter.Y + _lightRadius; y += StepBetweenlLedY)
+            for (var y = lightCenter.Y - _lightRadius; y < lightCenter.Y + _lightRadius; y += _ledsStep)
             {
-                for (var x = lightCenter.X - _lightRadius; x < lightCenter.X + _lightRadius; x += StepBetweenlLedX)
+                for (var x = lightCenter.X - _lightRadius; x < lightCenter.X + _lightRadius; x += _ledsStep)
                 {
-                    DrawLed(context, new Point(x, y), lightBrush);
+                    if (Math.Pow(x - lightCenter.X, 2) + Math.Pow(y - lightCenter.Y, 2) < Math.Pow(_lightRadius, 2))
+                    {
+                        DrawLed(context, new Point(x, y), lightBrush);
+                    }
                 }
             }
         }
@@ -331,8 +349,8 @@ namespace TrafficLights.Controls
                 ledBrush,
                 new Pen(ledBrush),
                 ledCenter,
-                5,
-                5
+                _ledRadius,
+                _ledRadius
             );
             
         }
