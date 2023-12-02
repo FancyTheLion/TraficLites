@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-
+using TrafficLights.Models;
 using TrafficLights.ViewModels;
 using TrafficLights.Views;
 
@@ -20,14 +20,17 @@ public partial class App : Application
         {
             desktop.MainWindow = new MainWindow
             {
-                DataContext = new MainViewModel()
+                // Here we create the traffic lights (new TrafficLightsModel())
+                // then we create the view model (new MainViewModel())
+                // and passing created traffic lights to it
+                DataContext = new MainViewModel(new TrafficLightsModel())
             };
         }
         else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
         {
             singleViewPlatform.MainView = new MainView
             {
-                DataContext = new MainViewModel()
+                DataContext = new MainViewModel(new TrafficLightsModel())
             };
         }
 

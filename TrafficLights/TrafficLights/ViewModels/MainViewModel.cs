@@ -1,10 +1,20 @@
 ﻿using ReactiveUI;
 using System.Reactive;
+using TrafficLights.Models;
 
 namespace TrafficLights.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
+    #region Models
+
+    /// <summary>
+    /// Traffic lights model 
+    /// </summary>
+    private TrafficLightsModel _trafficLightsModel;
+    
+    #endregion
+    
     #region Is red on
 
     private bool _isRedOn;
@@ -55,8 +65,14 @@ public class MainViewModel : ViewModelBase
 
     #endregion
 
-    public MainViewModel()
+    /// <summary>
+    /// Main view model constructor.
+    /// It is being called from App.axaml.cs
+    /// </summary>
+    public MainViewModel(TrafficLightsModel trafficLightsModel)
     {
+        _trafficLightsModel = trafficLightsModel;
+        
         #region Commands binding
 
         TurnRedOnCommand = ReactiveCommand.Create(TurnRedOn);
