@@ -55,32 +55,67 @@ namespace TrafficLights.Controls
         /// <summary>
         /// Brush for shining red light
         /// </summary>
-        private readonly IBrush RedLightOnBrush = new SolidColorBrush(RedLightOnColor);
+        private static readonly IBrush RedLightOnBrush = new SolidColorBrush(RedLightOnColor);
+
+        /// <summary>
+        /// Pen for shining red light
+        /// </summary>
+        private readonly IPen RedLightOnPen = new Pen(RedLightOnBrush);
         
         /// <summary>
         /// Brush for off red light
         /// </summary>
-        private readonly IBrush RedLightOffBrush = new SolidColorBrush(RedLightOffColor);
+        private static readonly IBrush RedLightOffBrush = new SolidColorBrush(RedLightOffColor);
+        
+        /// <summary>
+        /// Pen for off red light
+        /// </summary>
+        private readonly IPen RedLightOffPen = new Pen(RedLightOffBrush);
         
         /// <summary>
         /// Brush for shining yellow light
         /// </summary>
-        private readonly IBrush YellowLightOnBrush = new SolidColorBrush(YellowLightOnColor);
+        private static readonly IBrush YellowLightOnBrush = new SolidColorBrush(YellowLightOnColor);
+        
+        /// <summary>
+        /// Pen for shining yellow light
+        /// </summary>
+        private readonly IPen YellowLightOnPen = new Pen(YellowLightOnBrush);
         
         /// <summary>
         /// Brush for off yellow light
         /// </summary>
-        private readonly IBrush YellowLightOffBrush = new SolidColorBrush(YellowLightOffColor);
+        private static readonly IBrush YellowLightOffBrush = new SolidColorBrush(YellowLightOffColor);
+        
+        /// <summary>
+        /// Pen for off yellow light
+        /// </summary>
+        private readonly IPen YellowLightOffPen = new Pen(YellowLightOffBrush);
         
         /// <summary>
         /// Brush for shining green light
         /// </summary>
-        private readonly IBrush GreenLightOnBrush = new SolidColorBrush(GreenLightOnColor);
+        private static readonly IBrush GreenLightOnBrush = new SolidColorBrush(GreenLightOnColor);
+        
+        /// <summary>
+        /// Pen for shining green light
+        /// </summary>
+        private readonly IPen GreenLightOnPen = new Pen(GreenLightOnBrush);
         
         /// <summary>
         /// Brush for off green light
         /// </summary>
-        private readonly IBrush GreenLightOffBrush = new SolidColorBrush(GreenLightOffColor);
+        private static readonly IBrush GreenLightOffBrush = new SolidColorBrush(GreenLightOffColor);
+        
+        /// <summary>
+        /// Pen for off green light
+        /// </summary>
+        private readonly IPen GreenLightOffPen = new Pen(GreenLightOffBrush);
+        
+        /// <summary>
+        /// Transparent brush
+        /// </summary>
+        private readonly IBrush TransparentBrush = new SolidColorBrush(Colors.Transparent);
         
         #endregion
 
@@ -304,55 +339,69 @@ namespace TrafficLights.Controls
             );
             
             // Red light
-            DrawLight(context, IsRedLightOn ? RedLightOnBrush : RedLightOffBrush, _redLightCenter);
+            DrawLight
+            (
+                context,
+                IsRedLightOn ? RedLightOnBrush : RedLightOffBrush,
+                IsRedLightOn ? RedLightOnPen : RedLightOffPen,
+                _redLightCenter
+            );
             
             // Yellow light
-            DrawLight(context, IsYellowLightOn ? YellowLightOnBrush : YellowLightOffBrush, _yellowLightCenter);
+            DrawLight
+            (
+                context,
+                IsYellowLightOn ? YellowLightOnBrush : YellowLightOffBrush,
+                IsYellowLightOn ? YellowLightOnPen : YellowLightOffPen,
+                _yellowLightCenter
+            );
             
             // Green light
-            DrawLight(context, IsGreenLightOn ? GreenLightOnBrush : GreenLightOffBrush, _greenLightCenter);
+            DrawLight
+            (
+                context,
+                IsGreenLightOn ? GreenLightOnBrush : GreenLightOffBrush,
+                IsGreenLightOn ? GreenLightOnPen : GreenLightOffPen,
+                _greenLightCenter
+            );
         }
 
         /// <summary>
         /// Method to draw light
         /// </summary>
-        private void DrawLight(DrawingContext context, IBrush lightBrush, Point lightCenter)
+        private void DrawLight(DrawingContext context, IBrush lightBrush, IPen lightPen, Point lightCenter)
         {
-            for (var y = lightCenter.Y - _lightRadius; y < lightCenter.Y + _lightRadius; y += _ledsStep)
+            for (var y = lightCenter.Y - _lightRadius; y <= lightCenter.Y + _lightRadius; y += _ledsStep)
             {
-                for (var x = lightCenter.X - _lightRadius; x < lightCenter.X + _lightRadius; x += _ledsStep)
+                for (var x = lightCenter.X - _lightRadius; x <= lightCenter.X + _lightRadius; x += _ledsStep)
                 {
                     if (Math.Pow(x - lightCenter.X, 2) + Math.Pow(y - lightCenter.Y, 2) <= Math.Pow(_lightRadius, 2))
                     {
-                        DrawLed(context, new Point(x, y), lightBrush);
+                        DrawLed(context, new Point(x, y), lightBrush, lightPen);
                     }
                 }
             }
-        }
-        
-        /*private void DrawLight(DrawingContext context, IBrush lightBrush, Point lightCenter)
-        {
+            
             context.DrawEllipse
             (
-                lightBrush,
+                TransparentBrush,
                 LightsBordersPen,
                 lightCenter,
                 _lightRadius,
                 _lightRadius
             );
-        }*/
+        }
 
-        private void DrawLed(DrawingContext context, Point ledCenter, IBrush ledBrush)
+        private void DrawLed(DrawingContext context, Point ledCenter, IBrush ledBrush, IPen ledPen)
         {
             context.DrawEllipse
             (
                 ledBrush,
-                new Pen(ledBrush),
+                ledPen,
                 ledCenter,
                 _ledRadius,
                 _ledRadius
             );
-            
         }
     }
 }
