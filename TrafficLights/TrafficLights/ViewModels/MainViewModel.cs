@@ -1,19 +1,14 @@
 ﻿using ReactiveUI;
 using System.Reactive;
 using TrafficLights.Models;
+using TrafficLights.Models.Enums;
+using TrafficLights.Services.Abstract;
 
 namespace TrafficLights.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
-    #region Models
-
-    /// <summary>
-    /// Traffic lights model 
-    /// </summary>
-    private TrafficLightsModel _trafficLightsModel;
-    
-    #endregion
+    private readonly ILightsControllerService _lightsControllerService;
     
     #region Is red on
 
@@ -64,14 +59,22 @@ public class MainViewModel : ViewModelBase
     public ReactiveCommand<Unit, Unit> TurnGreenOffCommand { get; set; }
 
     #endregion
-
-    /// <summary>
-    /// Main view model constructor.
-    /// It is being called from App.axaml.cs
-    /// </summary>
-    public MainViewModel(TrafficLightsModel trafficLightsModel)
+    
+    public MainViewModel
+    (
+        ILightsControllerService lightsControllerService
+    )
     {
-        _trafficLightsModel = trafficLightsModel;
+        _lightsControllerService = lightsControllerService;
+        _lightsControllerService.AttachLightsControl(SetLightsStates);
+
+        #region Experiments
+
+        _lightsControllerService.SetLightState(LightColorEnum.Red, LightStateEnum.On);
+        _lightsControllerService.SetLightState(LightColorEnum.Yellow, LightStateEnum.Blinking);
+        _lightsControllerService.SetLightState(LightColorEnum.Green, LightStateEnum.On);
+
+        #endregion
         
         #region Commands binding
 
@@ -131,6 +134,16 @@ public class MainViewModel : ViewModelBase
     private void TurnGreenOff()
     {
         IsGreenOn = false;
+    }
+
+    /// <summary>
+    /// Set all lights states alltogether
+    /// </summary>
+    private void SetLightsStates(bool isRedOn, bool isYellowOn, bool isGreenOn)
+    {
+        IsRedOn = isRedOn;
+        IsYellowOn = isYellowOn;
+        IsGreenOn = isGreenOn;
     }
 
 }
