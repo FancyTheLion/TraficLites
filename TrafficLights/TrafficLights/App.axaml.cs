@@ -34,7 +34,8 @@ public partial class App : Application
             {
                 DataContext = new MainViewModel
                 (
-                    Di.GetService<ILightsControllerService>()
+                    Di.GetService<ILightsControllerService>(),
+                    Di.GetService<IStateMachine>()
                 )
             };
         }
@@ -44,7 +45,8 @@ public partial class App : Application
             {
                 DataContext = new MainViewModel
                 (
-                    Di.GetService<ILightsControllerService>()
+                    Di.GetService<ILightsControllerService>(),
+                    Di.GetService<IStateMachine>()
                 )
             };
         }
@@ -64,6 +66,7 @@ public partial class App : Application
         // This command means "use LightsControllerService where application needs the ILightsControllerService
         // interface"
         services.AddSingleton<ILightsControllerService, LightsControllerService>();
+        services.AddSingleton<IStateMachine, StateMachine>();
 
         #endregion
 

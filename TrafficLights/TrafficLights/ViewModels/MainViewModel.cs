@@ -1,7 +1,4 @@
 ﻿using ReactiveUI;
-using System.Reactive;
-using TrafficLights.Models;
-using TrafficLights.Models.Enums;
 using TrafficLights.Services.Abstract;
 
 namespace TrafficLights.ViewModels;
@@ -9,6 +6,7 @@ namespace TrafficLights.ViewModels;
 public class MainViewModel : ViewModelBase
 {
     private readonly ILightsControllerService _lightsControllerService;
+    private readonly IStateMachine _stateMachine;
     
     #region Is red on
 
@@ -48,92 +46,18 @@ public class MainViewModel : ViewModelBase
     }
 
     #endregion
-
-    #region Commands
-
-    public ReactiveCommand<Unit, Unit> TurnRedOnCommand { get; set; }
-    public ReactiveCommand<Unit, Unit> TurnRedOffCommand { get; set; }
-    public ReactiveCommand<Unit, Unit> TurnYellowOnCommand { get; set; }
-    public ReactiveCommand<Unit, Unit> TurnYellowOffCommand { get; set; }
-    public ReactiveCommand<Unit, Unit> TurnGreenOnCommand { get; set; }
-    public ReactiveCommand<Unit, Unit> TurnGreenOffCommand { get; set; }
-
-    #endregion
     
     public MainViewModel
     (
-        ILightsControllerService lightsControllerService
+        ILightsControllerService lightsControllerService,
+        IStateMachine stateMachine
     )
     {
         _lightsControllerService = lightsControllerService;
-        _lightsControllerService.AttachLightsControl(SetLightsStates);
-
-        #region Experiments
-
-        _lightsControllerService.SetLightState(LightColorEnum.Red, LightStateEnum.On);
-        _lightsControllerService.SetLightState(LightColorEnum.Yellow, LightStateEnum.Blinking);
-        _lightsControllerService.SetLightState(LightColorEnum.Green, LightStateEnum.On);
-
-        #endregion
+        _stateMachine = stateMachine;
         
-        #region Commands binding
-
-        TurnRedOnCommand = ReactiveCommand.Create(TurnRedOn);
-        TurnRedOffCommand = ReactiveCommand.Create(TurnRedOff);
-        TurnYellowOnCommand = ReactiveCommand.Create(TurnYellowOn);
-        TurnYellowOffCommand = ReactiveCommand.Create(TurnYellowOff);
-        TurnGreenOnCommand = ReactiveCommand.Create(TurnGreenOn);
-        TurnGreenOffCommand = ReactiveCommand.Create(TurnGreenOff);
-
-        #endregion
-    }
-
-    /// <summary>
-    /// Turn red light on
-    /// </summary>
-    private void TurnRedOn()
-    {
-        IsRedOn = true;
-    }
-
-    /// <summary>
-    /// Turn red light off
-    /// </summary>
-    private void TurnRedOff()
-    {
-        IsRedOn = false;
-    }
-
-    /// <summary>
-    /// Turn yellow light on
-    /// </summary>
-    private void TurnYellowOn()
-    {
-        IsYellowOn = true;
-    }
-
-    /// <summary>
-    /// Turn yellow light off
-    /// </summary>
-    private void TurnYellowOff()
-    {
-        IsYellowOn = false;
-    }
-
-    /// <summary>
-    /// Turn green light on
-    /// </summary>
-    private void TurnGreenOn()
-    {
-        IsGreenOn = true;
-    }
-
-    /// <summary>
-    /// Turn green light off
-    /// </summary>
-    private void TurnGreenOff()
-    {
-        IsGreenOn = false;
+        _lightsControllerService.AttachLightsControl(SetLightsStates);
+        _stateMachine.StartMachine();
     }
 
     /// <summary>

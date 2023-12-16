@@ -98,26 +98,37 @@ public class LightsControllerService : ILightsControllerService
     /// </summary>
     private void OnBlinkTimer(object? sender, ElapsedEventArgs e)
     {
+        var isSomethingChanged = false;
+        
         if (_trafficLightsModel.RedLightState == LightStateEnum.Blinking)
         {
             _trafficLightsModel.IsRedLightOn = !_trafficLightsModel.IsRedLightOn;
+
+            isSomethingChanged = true;
         }
         
         if (_trafficLightsModel.YellowLightState == LightStateEnum.Blinking)
         {
             _trafficLightsModel.IsYellowLightOn = !_trafficLightsModel.IsYellowLightOn;
+            
+            isSomethingChanged = true;
         }
         
         if (_trafficLightsModel.GreenLightState == LightStateEnum.Blinking)
         {
             _trafficLightsModel.IsGreenLightOn = !_trafficLightsModel.IsGreenLightOn;
+            
+            isSomethingChanged = true;
         }
-        
-        _lightsControlDelegate
-        (
-            _trafficLightsModel.IsRedLightOn,
-            _trafficLightsModel.IsYellowLightOn,
-            _trafficLightsModel.IsGreenLightOn
-        );
+
+        if (isSomethingChanged)
+        {
+            _lightsControlDelegate
+            (
+                _trafficLightsModel.IsRedLightOn,
+                _trafficLightsModel.IsYellowLightOn,
+                _trafficLightsModel.IsGreenLightOn
+            );
+        }
     }
 }
